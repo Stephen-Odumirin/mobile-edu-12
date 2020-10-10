@@ -10,11 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
  
-        <activity android:name=".StudentSignInActivity">
-
-
-     
-            
+        <activity android:name=".StudentSignInActivity" android:theme="@style/NoActionbar">
 
         </activity>
         <activity android:name=".SplashActivity" android:theme="@style/NoActionbar">
