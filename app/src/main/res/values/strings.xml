@@ -5,5 +5,19 @@
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="student_sign_up">Student Sign In</string>
+    <string name="student_sign_in">Student Sign In</string>
+    <string name="lecturer_sign_in">Lecturer Sign In</string>
+    <string name="create_lecturer_account">Create Lecturer Account</string>
+    <string name="sign_in_as_student">Sign in as Student</string>
+    <string name="sign_in_as_lecturer">Sign in as Lecturer</string>
+    <string name="create_student_account">Create Student Account</string>
+    <string name="lecturer_sign_up">Lecturer Sign Up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_up">sign up</string>
+    <string name="student_sign_up">Student Sign Up</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up_as_student">Sign up as Student</string>
+    <string name="sign_up_as_lecturer">Sign up as Lecturer</string>
 </resources>

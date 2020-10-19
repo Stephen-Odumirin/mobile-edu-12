@@ -1,10 +1,12 @@
-package com.skool;
+package com.skool.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.skool.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -18,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
 @Override
 public void run() {
-        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+        Intent intent = new Intent(SplashActivity.this, AuthActivity.class);
         startActivity(intent);
         finish();
         }

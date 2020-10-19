@@ -9,15 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
- 
-        <activity android:name=".StudentSignInActivity">
-
-
-     
-            
-
-        </activity>
-        <activity android:name=".SplashActivity" android:theme="@style/NoActionbar">
+        <activity android:name=".authentication.StudentSignUpActivity" />
+        <activity android:name=".authentication.LecturerSignUpActivity" />
+        <activity android:name=".authentication.LecturerSignInActivity" />
+        <activity android:name=".splash.AuthActivity" />
+        <activity android:name=".authentication.StudentSignInActivity" />
+        <activity
+            android:name=".splash.SplashActivity"
+            android:theme="@style/NoActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
