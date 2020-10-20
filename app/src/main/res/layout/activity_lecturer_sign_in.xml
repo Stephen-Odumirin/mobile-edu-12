@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.StudentSignInActivity">
-
+    tools:context=".authentication.LecturerSignInActivity">
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/student_sign_in"
+        android:text="@string/lecturer_sign_in"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +19,7 @@
         app:layout_constraintVertical_bias="0.050000012" />
 
     <EditText
-        android:id="@+id/student_sign_in_email"
+        android:id="@+id/lecturer_sign_in_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -33,45 +32,46 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/student_sign_in_password"
+        android:id="@+id/lecturer_sign_in_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/student_sign_in_email"
-        app:layout_constraintStart_toStartOf="@+id/student_sign_in_email"
-        app:layout_constraintTop_toBottomOf="@+id/student_sign_in_email" />
+        app:layout_constraintEnd_toEndOf="@+id/lecturer_sign_in_email"
+        app:layout_constraintStart_toStartOf="@+id/lecturer_sign_in_email"
+        app:layout_constraintTop_toBottomOf="@+id/lecturer_sign_in_email" />
 
     <Button
-        android:id="@+id/student_sign_in_button"
+        android:id="@+id/lecturer_sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@drawable/button_background"
         android:textColor="@android:color/white"
         android:text="@string/sign_in"
-        app:layout_constraintStart_toStartOf="@+id/student_sign_in_password"
-        app:layout_constraintTop_toBottomOf="@+id/student_sign_in_password" />
+        app:layout_constraintStart_toStartOf="@+id/lecturer_sign_in_password"
+        app:layout_constraintTop_toBottomOf="@+id/lecturer_sign_in_password" />
 
     <TextView
-        android:id="@+id/sign_in_as_lecturer_tv"
+        android:id="@+id/create_lecturer_account_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/sign_in_as_lecturer"
+        android:text="@string/create_lecturer_account"
         android:textColor="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="@+id/student_sign_in_password"
-        app:layout_constraintTop_toBottomOf="@+id/create_student_account_tv" />
+        app:layout_constraintEnd_toEndOf="@+id/lecturer_sign_in_password"
+        app:layout_constraintTop_toBottomOf="@+id/lecturer_sign_in_button" />
 
     <TextView
-        android:id="@+id/create_student_account_tv"
+        android:id="@+id/sign_in_as_student_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="@string/sign_in_as_student"
         android:textColor="@color/colorAccent"
-        android:text="@string/create_student_account"
-        app:layout_constraintEnd_toEndOf="@+id/student_sign_in_password"
-        app:layout_constraintTop_toBottomOf="@+id/student_sign_in_button" />
+        app:layout_constraintEnd_toEndOf="@+id/create_lecturer_account_tv"
+        app:layout_constraintTop_toBottomOf="@+id/create_lecturer_account_tv" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
