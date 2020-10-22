@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "399098012318",
+    "firebase_url": "https://skool-c5564.firebaseio.com",
+    "project_id": "skool-c5564",
+    "storage_bucket": "skool-c5564.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399098012318:android:f8579d087cc2ede952d18f",
+        "android_client_info": {
+          "package_name": "com.skool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399098012318-r5qv9vu6ba0buhs8209cgnu79hld5l72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgCozsobFaC0cOZPOjCEDz1NEscWBK2Ss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399098012318-r5qv9vu6ba0buhs8209cgnu79hld5l72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
