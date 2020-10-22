@@ -19,48 +19,49 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import com.skool.R;
 
-public class LecturerSignInActivity extends AppCompatActivity {
+public class StudentSignInActivity  extends AppCompatActivity {
 
-    private static final String TAG = "LecturerSignInActivity";
+
+
+    private static final String TAG = "StudentSignInActivity";
 
 
     //Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    EditText lecturerEmailEt;
-    EditText lecturerPasswordEt;
-    Button lecturerSignInBtn;
-    TextView createLecturerAccountTv;
-    TextView signInAsStudentTv;
-    ProgressBar mProgressBar;
+    EditText studentEmailEt;
+    EditText studentPasswordEt;
+    Button studentSignInBtn;
+    TextView createStudentAccountTv;
+    TextView signInAsLectureTv;
+     ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lecturer_sign_in);
+        setContentView(R.layout.activity_student_signin);
 
         initViews();
         setOnClickListeners();
         setupFirebaseAuth();
 
-
-        Button lecturerSignInBtn =  findViewById(R.id.lecturer_sign_in_button);
-        lecturerSignInBtn.setOnClickListener(new View.OnClickListener() {
+        Button studentSignInBtn =  findViewById(R.id.student_sign_in_button);
+        studentSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //check if the fields are filled out
-
-                if(!isEmpty(lecturerEmailEt.getText().toString())
-                        && !isEmpty(lecturerPasswordEt.getText().toString())){
+                if(!isEmpty(studentEmailEt.getText().toString())
+                        && !isEmpty(studentPasswordEt.getText().toString())){
                     Log.d(TAG, "onClick: attempting to authenticate.");
 
                     showDialog();
 
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(lecturerEmailEt.getText().toString(),
-                            lecturerPasswordEt.getText().toString())
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(studentEmailEt.getText().toString(),
+                            studentPasswordEt.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -75,12 +76,16 @@ public class LecturerSignInActivity extends AppCompatActivity {
                         }
                     });
                 }else{
-                    Toast.makeText(LecturerSignInActivity.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentSignInActivity.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
+    /**
+     * Return true if the @param is null
+     * @param string
+     * //@return
+     */
     private boolean isEmpty(String string){
         return string.equals("");
     }
@@ -91,7 +96,6 @@ public class LecturerSignInActivity extends AppCompatActivity {
 
     }
 
-
     public void hideDialog(){
         if(mProgressBar.getVisibility() == View.VISIBLE){
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -100,7 +104,7 @@ public class LecturerSignInActivity extends AppCompatActivity {
 
 
 
-         //Firebase setup
+        //Firebase setup
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: started.");
 
@@ -110,7 +114,7 @@ public class LecturerSignInActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Toast.makeText(LecturerSignInActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentSignInActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
                 } else {
                     // User is signed out
@@ -135,35 +139,34 @@ public class LecturerSignInActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void setOnClickListeners() {
-        createLecturerAccountTv.setOnClickListener(new View.OnClickListener() {
+        createStudentAccountTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchActivity(LecturerSignUpActivity.class);
+                launchActivity(StudentSignUpActivity.class);
             }
         });
-        signInAsStudentTv.setOnClickListener(new View.OnClickListener() {
+        signInAsLectureTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchActivity(StudentSignInActivity.class);
+                launchActivity(LecturerSignInActivity.class);
             }
         });
     }
 
     private void initViews() {
-        lecturerEmailEt = findViewById(R.id.lecturer_sign_in_email);
-        lecturerPasswordEt = findViewById(R.id.lecturer_sign_in_password);
-        lecturerSignInBtn = findViewById(R.id.sign_in_as_lecturer);
-        createLecturerAccountTv = findViewById(R.id.create_lecturer_account_tv);
-        signInAsStudentTv = findViewById(R.id.sign_in_as_student_tv);
+        studentEmailEt = findViewById(R.id.student_sign_in_email);
+        studentPasswordEt = findViewById(R.id.student_sign_in_password);
+        studentSignInBtn = findViewById(R.id.student_sign_in_button);
+        createStudentAccountTv = findViewById(R.id.create_student_account_tv);
+        signInAsLectureTv = findViewById(R.id.sign_in_as_lecturer_tv);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void launchActivity(Class activityClass) {
-        Intent intent = new Intent(LecturerSignInActivity.this, activityClass);
+        Intent intent = new Intent(StudentSignInActivity.this, activityClass);
         startActivity(intent);
         finish();
     }
 }
+

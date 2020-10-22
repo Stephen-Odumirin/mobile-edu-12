@@ -24,6 +24,7 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
         signInAsStudent = findViewById(R.id.sign_in_as_student);
         signInAsLecturer = findViewById(R.id.sign_in_as_lecturer);
         signUpAsStudent = findViewById(R.id.sign_up_as_student);

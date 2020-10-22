@@ -74,4 +74,15 @@
         android:text="@string/create_student_account"
         app:layout_constraintEnd_toEndOf="@+id/student_sign_in_password"
         app:layout_constraintTop_toBottomOf="@+id/student_sign_in_button" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="109dp"
+        android:layout_height="109dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_as_lecturer_tv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

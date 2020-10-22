@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -73,5 +74,16 @@
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/create_lecturer_account_tv"
         app:layout_constraintTop_toBottomOf="@+id/create_lecturer_account_tv" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="69dp"
+        android:layout_height="71dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_as_student_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

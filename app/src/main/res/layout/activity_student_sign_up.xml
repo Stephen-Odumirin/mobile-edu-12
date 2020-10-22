@@ -125,4 +125,14 @@
         app:layout_constraintEnd_toEndOf="@+id/sign_in_as_student_tv"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_as_student_tv" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="115dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_as_lecturer_tv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

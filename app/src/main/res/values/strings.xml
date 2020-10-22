@@ -20,4 +20,11 @@
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="sign_up_as_student">Sign up as Student</string>
     <string name="sign_up_as_lecturer">Sign up as Lecturer</string>
+    <string name="profile_pic">profile</string>
+    <string name="textview_1">TextView</string>
+    <string name="textview_2">TextView</string>
+    <string name="textview_3">TextView</string>
+    <string name="button_1">Button</string>
+    <string name="button_2">Button</string>
+    <string name="mlogout">LogOut</string>
 </resources>
