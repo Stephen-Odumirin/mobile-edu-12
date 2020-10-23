@@ -27,4 +27,24 @@
     <string name="button_1">Button</string>
     <string name="button_2">Button</string>
     <string name="mlogout">LogOut</string>
+    <string name="textlec">This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n
+        This is the Description of the lecture \n</string>
+    <string name="qns">50 questions</string>
+    <string name="ans">40 answer</string>
+    <string name="ask_ic">ask_ic</string>
+    <string name="tvtextview">I need help with this activity</string>
 </resources>

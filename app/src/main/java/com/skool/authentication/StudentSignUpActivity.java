@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.skool.R;
 
 
@@ -59,7 +60,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
         studentSignInBtn = findViewById(R.id.student_sign_in_button);
         studentSignInTv = findViewById(R.id.sign_in_as_student_tv);
         lecturerSignInTv = findViewById(R.id.sign_in_as_lecturer_tv);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar =  findViewById(R.id.progressBar);
 
 
 
@@ -129,6 +130,9 @@ public class StudentSignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Log.d(TAG, "onComplete: AuthState: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+                            //send email verification
+                            sendVerificationEmail();
+
                             FirebaseAuth.getInstance().signOut();
 
                             //redirect the user to the login screen
@@ -145,7 +149,31 @@ public class StudentSignUpActivity extends AppCompatActivity {
                 });
     }
 
-   // Returns True if the user's email contains '@gmail.com'
+    /**
+     * sends an email verification link to the user
+     */
+    private void sendVerificationEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(StudentSignUpActivity.this, "Sent Verification Email", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(StudentSignUpActivity.this, "Couldn't Verification Send Email", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
+    }
+
+
+    // Returns True if the user's email contains '@gmail.com'
     private boolean isValidDomain(String email){
         Log.d(TAG, "isValidDomain: verifying email has correct domain: " + email);
         String domain = email.substring(email.indexOf("@") + 1).toLowerCase();

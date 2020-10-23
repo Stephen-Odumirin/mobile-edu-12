@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.skool.LectureDetailsActivity;
 import com.skool.R;
 
 public class LecturerSignInActivity extends AppCompatActivity {
@@ -109,15 +110,25 @@ public class LecturerSignInActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Toast.makeText(LecturerSignInActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    if (user.isEmailVerified()) {
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                        Toast.makeText(LecturerSignInActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(LecturerSignInActivity.this, LectureDetailsActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // User is signed out
+                        Toast.makeText(LecturerSignInActivity.this, "Email is not Verified\nCheck your Inbox", Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
+                    }
+                    }else{
+                        // User is signed out
+                        Log.d(TAG, "onAuthStateChanged:signed_out");
+                    }
+
                 }
-                // ...
-            }
         };
     }
 
@@ -158,7 +169,7 @@ public class LecturerSignInActivity extends AppCompatActivity {
         lecturerSignInBtn = findViewById(R.id.sign_in_as_lecturer);
         createLecturerAccountTv = findViewById(R.id.create_lecturer_account_tv);
         signInAsStudentTv = findViewById(R.id.sign_in_as_student_tv);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar = findViewById(R.id.progressBar);
     }
 
     private void launchActivity(Class activityClass) {

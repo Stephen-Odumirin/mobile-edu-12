@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.skool.R;
 
 public class LecturerSignUpActivity extends AppCompatActivity {
@@ -56,7 +57,7 @@ public class LecturerSignUpActivity extends AppCompatActivity {
         lecturerSignUpBtn = findViewById(R.id.lecturer_sign_up_button);
         lecturerSignInTv = findViewById(R.id.sign_in_as_lecturer_tv);
         studentSignInTv = findViewById(R.id.sign_in_as_student_tv);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar = findViewById(R.id.progressBar);
 
         lecturerSignInTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +129,8 @@ public class LecturerSignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Log.d(TAG, "onComplete: AuthState: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+                            //send email verification
+                            sendVerificationEmail();
                             FirebaseAuth.getInstance().signOut();
 
                             //redirect the user to the login screen
@@ -142,6 +145,31 @@ public class LecturerSignUpActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+
+
+    /**
+     * sends an email verification link to the user
+     */
+    private void sendVerificationEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LecturerSignUpActivity.this, "Sent Verification Email", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(LecturerSignUpActivity.this, "Couldn't Verification Send Email", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
     }
 
    // Returns True if the user's email contains '@gmail.com'
