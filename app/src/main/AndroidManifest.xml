@@ -11,8 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StudentDetailActivity"></activity>
-        <activity android:name=".LectureDetailsActivity" />
+        <activity android:name=".MyLectureActivity" android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".AddLectureActivity" android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/appStyle" />
+        <activity android:name=".LectureListActivity" android:parentActivityName=".HomeActivity" />
+        <activity android:name=".LectureDetailsActivity" android:parentActivityName=".LectureListActivity" />
         <activity android:name=".authentication.StudentSignUpActivity" />
         <activity android:name=".authentication.LecturerSignUpActivity" />
         <activity android:name=".authentication.LecturerSignInActivity" />

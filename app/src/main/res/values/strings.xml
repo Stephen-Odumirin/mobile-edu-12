@@ -47,4 +47,26 @@
     <string name="ans">40 answer</string>
     <string name="ask_ic">ask_ic</string>
     <string name="tvtextview">I need help with this activity</string>
+    <string name="comments">Comments</string>
+    <string name="download_lecture">Download Lecture</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="upload_lecture">Upload Lecture</string>
+    <string name="lecture_title">Lecture Title</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="save_lecture">Save Lecture</string>
+    <string name="find_lecture_by_category">Find Lecture By Category</string>
+    <string name="my_lectures">My Lectures</string>
+    <string name="create_new_lecture">Create New Lecture</string>
+    <string name="ooops_it_is_a_bit_lonely_here">Ooops! it is a bit lonely here...</string>
+
+    <string-array name="categories">
+        <item>Science</item>
+        <item>Engineering</item>
+        <item>Medicine</item>
+        <item>ICT</item>
+        <item>Arts</item>
+        <item>Social Sciences</item>
+        <item>Business</item>
+    </string-array>
 </resources>

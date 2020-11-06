@@ -14,15 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.skool.LectureDetailsActivity;
+import com.skool.HomeActivity;
 import com.skool.R;
-import com.skool.StudentDetailActivity;
+
+import java.util.Objects;
 
 public class StudentSignInActivity  extends AppCompatActivity {
 
@@ -68,16 +68,21 @@ public class StudentSignInActivity  extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-
                                     hideDialog();
 
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(StudentSignInActivity.this, "Student SignIn successful", Toast.LENGTH_SHORT).show();
+                                        launchActivity(HomeActivity.class);
+                                    }
+
+                                    else {
+                                        Log.v("sign in failed", Objects.requireNonNull(task.getException()).getLocalizedMessage());
+                                        Toast.makeText(StudentSignInActivity.this, "Student sign in failed: " + Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+                                    }
+
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            hideDialog();
-                        }
-                    });
+                            });
                 } else {
                     Toast.makeText(StudentSignInActivity.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
                 }
@@ -122,9 +127,7 @@ public class StudentSignInActivity  extends AppCompatActivity {
                         Toast.makeText(StudentSignInActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
 
-                        Intent intent = new Intent(StudentSignInActivity.this, StudentDetailActivity.class);
-                        startActivity(intent);
-                        finish();
+                        launchActivity(HomeActivity.class);
 
                     } else {
                         // User is signed out
