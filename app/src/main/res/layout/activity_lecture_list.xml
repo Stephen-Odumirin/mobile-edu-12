@@ -1,0 +1,39 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+       <TextView
+           android:id="@+id/category_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_margin="16dp"/>
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/lecture_list_rv"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_alignTop="@id/category_name"
+           android:layout_margin="16dp"
+           android:layout_marginTop="36dp"
+           />
+       <ProgressBar
+           android:id="@+id/progress_bar"
+           android:layout_width="48dp"
+           android:layout_height="48dp"
+           android:layout_gravity="center"
+           android:layout_centerInParent="true"
+           android:visibility="gone"/>
+
+       <TextView
+           android:id="@+id/no_lectures_tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/no_lectures_for_this_category"
+           android:visibility="gone"
+           android:layout_centerInParent="true"
+           />
+
+</RelativeLayout>

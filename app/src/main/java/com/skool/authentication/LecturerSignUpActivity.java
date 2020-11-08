@@ -19,11 +19,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.skool.R;
+import com.skool.model.User;
+
+import java.util.Objects;
+
+import static com.skool.model.constants.LECTURER_USER_TYPE;
+import static com.skool.model.constants.USER_PATH;
 
 public class LecturerSignUpActivity extends AppCompatActivity {
 
 
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     private static final String TAG = "RegisterActivity";
 
@@ -127,18 +137,23 @@ public class LecturerSignUpActivity extends AppCompatActivity {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()){
-                            Log.d(TAG, "onComplete: AuthState: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                            //send email verification
-                            sendVerificationEmail();
-                            FirebaseAuth.getInstance().signOut();
+                            //save User To DB
 
-                            //redirect the user to the login screen
-                            redirectLoginScreen();
+                            String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                            Log.d(TAG, "onComplete: AuthState: " + userId);
+
+                            String firstName = lecturerFirstNameEt.getText().toString();
+                            String lastName = lecturerLastNameEt.getText().toString();
+                            String email = lecturerEmailEt.getText().toString();
+
+                            User lecturer = new User(firstName,lastName,email,userId, LECTURER_USER_TYPE);
+                            saveUserToDb(lecturer);
+
                         }
                         if (!task.isSuccessful()) {
-                            Toast.makeText(LecturerSignUpActivity.this, "Unable to Register",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LecturerSignUpActivity.this, "Unable to Register " + task.getException(),
+                                    Toast.LENGTH_LONG).show();
                         }
                         hideDialog();
 
@@ -223,6 +238,38 @@ public class LecturerSignUpActivity extends AppCompatActivity {
         Intent intent = new Intent(LecturerSignUpActivity.this, activityClass);
         startActivity(intent);
         finish();
+    }
+
+
+    private void saveUserToDb(User user){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child(USER_PATH);
+        Task<Void> task = databaseReference.child(user.getUserId()).setValue(user);
+        Log.v(TAG, "saving user to db...");
+        task.addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                    Log.v(TAG, "saving user to db sucessful");
+
+
+                    //send email verification
+                    sendVerificationEmail();
+                    FirebaseAuth.getInstance().signOut();
+
+                    //redirect the user to the login screen
+                    redirectLoginScreen();
+                }
+
+                else {
+                    Log.v(TAG, "saving user to db: failed");
+
+                    Toast.makeText(LecturerSignUpActivity.this, "Error: "+task.getException(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
         }
 

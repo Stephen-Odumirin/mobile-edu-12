@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddLectureActivity">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/uploaded_image_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_baseline_add_a_photo_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/lecture_title_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="@string/lecture_title"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/uploaded_image_view"
+        app:layout_constraintTop_toBottomOf="@id/uploaded_image_view"
+        />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/category"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="@id/category_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/lecture_title_edit_text"
+        app:layout_constraintTop_toTopOf="@id/category_spinner" />
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="@id/lecture_title_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/lecture_title_edit_text" />
+
+    <Button
+        android:id="@+id/upload_lecture_button"
+        android:background="@drawable/button_background"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/load_lecture"
+        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/lecture_description_edit_text" />
+
+    <TextView
+        android:id="@+id/upload_lecture_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/upload_lecture"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/upload_lecture_button"
+        app:layout_constraintEnd_toStartOf="@+id/upload_lecture_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/lecture_title_edit_text"
+        app:layout_constraintTop_toTopOf="@+id/upload_lecture_button" />
+
+
+    <EditText
+        android:id="@+id/lecture_description_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="@string/description"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="@id/lecture_title_edit_text"
+        app:layout_constraintStart_toStartOf="@+id/lecture_title_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/category_spinner" />
+
+
+
+
+
+    <Button
+        android:id="@+id/save_lecture_button"
+        android:background="@drawable/button_background"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/save_lecture"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lecture_description_edit_text"
+        app:layout_constraintStart_toStartOf="@+id/lecture_description_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/upload_lecture_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

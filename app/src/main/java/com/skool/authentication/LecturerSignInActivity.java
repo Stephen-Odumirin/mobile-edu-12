@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.skool.HomeActivity;
 import com.skool.LectureDetailsActivity;
 import com.skool.R;
+
+import java.util.Objects;
 
 public class LecturerSignInActivity extends AppCompatActivity {
 
@@ -65,16 +68,21 @@ public class LecturerSignInActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-
                                     hideDialog();
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(LecturerSignInActivity.this, "Lecturer SignIn successful", Toast.LENGTH_SHORT).show();
+                                        launchActivity(HomeActivity.class);
+                                    }
+
+                                    else {
+                                        Log.v("sign in failed", Objects.requireNonNull(task.getException()).getLocalizedMessage());
+                                        Toast.makeText(LecturerSignInActivity.this, "Lecturer sign in failed: " + Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+                                    }
+
 
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            hideDialog();
-                        }
-                    });
+                            });
                 }else{
                     Toast.makeText(LecturerSignInActivity.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
                 }
@@ -115,7 +123,7 @@ public class LecturerSignInActivity extends AppCompatActivity {
                         Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                         Toast.makeText(LecturerSignInActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(LecturerSignInActivity.this, LectureDetailsActivity.class);
+                        Intent intent = new Intent(LecturerSignInActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
