@@ -68,7 +68,7 @@ public class MyLectureAdapter extends RecyclerView.Adapter<MyLectureAdapter.View
         public void bind(final Lecture lecture) {
             title.setText(lecture.getTitle());
             category.setText(lecture.getCategory());
-            date.setText(null);
+            date.setText(lecture.getDate().toString());
             numberOfComments.setText(String.valueOf(lecture.getNumberOfComments()));
             showImage(lecture.getImageUrl());
 

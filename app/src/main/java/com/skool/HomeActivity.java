@@ -1,16 +1,16 @@
 package com.skool;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,21 +20,21 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.skool.authentication.StudentSignInActivity;
 import com.skool.custom.LectureCategoryAdapter;
 import com.skool.model.LectureCategory;
 import com.skool.model.User;
+import com.skool.splash.AuthActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.skool.model.constants.STUDENT_USER_TYPE;
 import static com.skool.model.constants.USER_PATH;
 
 public class HomeActivity extends AppCompatActivity {
@@ -84,7 +84,14 @@ public class HomeActivity extends AppCompatActivity {
                     Log.v("user is: ", Objects.requireNonNull(user).getFirstName());
                     profileName.setText(String.format("Hello %s", user.getFirstName()));
                     showImage(user.getImageUrl());
+                    if (user.getImageUrl()!=null) Log.v("image url is ", user.getImageUrl());
                     showViews();
+                    if(user.getUserType()==STUDENT_USER_TYPE){
+                        addLectureTv.setVisibility(View.GONE);
+                        myLecturesBtn.setVisibility(View.GONE);
+                        Log.v("image url is ", "is hidden user type is " + user.getUserType());
+
+                    }
                 }
 
                 @Override
@@ -108,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        databaseReference.removeEventListener(valueEventListener);
+        if (valueEventListener!=null) databaseReference.removeEventListener(valueEventListener);
     }
 
     private void initViews() {
@@ -122,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
         myLecturesBtn = findViewById(R.id.my_lectures_btn);
         layoutManager = new GridLayoutManager(this, 3, RecyclerView.VERTICAL,false);
         lectureCategoriesRv.setLayoutManager(layoutManager);
-        loadDoctorCategories();
+        loadLectureCategories();
         lectureCategoryAdapter = new LectureCategoryAdapter(lectureCategories);
         lectureCategoriesRv.setAdapter(lectureCategoryAdapter);
 
@@ -137,6 +144,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 launchActivity(MyLectureActivity.class);
+            }
+        });
+        profilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchActivity(ProfileActivity.class);
             }
         });
     }
@@ -164,7 +177,7 @@ public class HomeActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void loadDoctorCategories() {
+    private void loadLectureCategories() {
         lectureCategories = new ArrayList<>();
         LectureCategory science = new LectureCategory("Science", R.drawable.ic_baseline_science_24);
         LectureCategory engineering = new LectureCategory("Engineering", R.drawable.ic_baseline_engineering_24);
@@ -189,7 +202,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showImage(String imageUrl) {
-        if (imageUrl != null && !imageUrl.isEmpty()) {
+        if (imageUrl != null && imageUrl.trim().length()!=0) {
             Picasso.get().load(imageUrl)
                     .into(profilePhoto);
         }
@@ -198,6 +211,26 @@ public class HomeActivity extends AppCompatActivity {
     private void launchActivity(Class activityClass) {
         Intent intent = new Intent(HomeActivity.this, activityClass);
         intent.putExtra(USER_PATH, user);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_xml, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.log_out){
+            logUserOut();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logUserOut() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, AuthActivity.class);
         startActivity(intent);
         finish();
     }

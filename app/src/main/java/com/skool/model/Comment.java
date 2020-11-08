@@ -1,6 +1,11 @@
 package com.skool.model;
 
-public class Comment {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Comment implements Serializable {
     private  String name;
     private String commentBody;
 
@@ -9,6 +14,8 @@ public class Comment {
         this.commentBody = commentBody;
     }
 
+    public Comment(){}
+
     public String getName() {
         return name;
     }
@@ -16,4 +23,6 @@ public class Comment {
     public String getCommentBody() {
         return commentBody;
     }
+
+
 }

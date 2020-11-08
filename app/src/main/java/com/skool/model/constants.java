@@ -8,8 +8,10 @@ public class constants {
     public static final int STUDENT_USER_TYPE = 0;
     public static final String ID_FIELD = "authorId";
     public static final int UPLOAD_LECTURE_COVER_IMAGE_REQUEST_CODE = 5;
+    public static final int UPLOAD_PROFILE_PHOTO_REQUEST_CODE = 45;
     public static final int UPLOAD_LECTURE_ATTACHMENT_REQUEST_CODE = 7;
     public static final String LECTURE_COVER_IMAGE_PATH = "lecture_cover_image";
     public static final String LECTURE_ATTACHMENT_PATH = "lecture_attachments";
+    public static final String PROFILE_PHOTO_IMAGE_PATH = "profile-photos";
 
 }

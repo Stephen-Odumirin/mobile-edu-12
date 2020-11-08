@@ -123,7 +123,7 @@ public class LecturerSignInActivity extends AppCompatActivity {
                         Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                         Toast.makeText(LecturerSignInActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(LecturerSignInActivity.this, LectureDetailsActivity.class);
+                        Intent intent = new Intent(LecturerSignInActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

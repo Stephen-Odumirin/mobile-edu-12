@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.skool.LectureDetailsActivity;
 import com.skool.R;
 import com.skool.model.Lecture;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -55,14 +56,14 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
         private TextView category;
         private TextView author;
         private TextView numberOfComments;
-        private ImageView imageUrl;
+        private ImageView imageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.my_lecture_title);
             category = itemView.findViewById(R.id.my_lecture_category);
             author = itemView.findViewById(R.id.my_lecture_date);
             numberOfComments = itemView.findViewById(R.id.my_lecture_number_of_comments);
-            imageUrl = itemView.findViewById(R.id.my_lecture_image_item);
+            imageView = itemView.findViewById(R.id.my_lecture_image_item);
 
         }
 
@@ -71,6 +72,7 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
             category.setText(lecture.getCategory());
             author.setText(lecture.getAuthor());
             numberOfComments.setText(String.valueOf(lecture.getNumberOfComments()));
+            showImage(lecture.getImageUrl());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,5 +87,14 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
             });
 
         }
+
+        private void showImage(String imageUrl) {
+            if (imageUrl != null && imageUrl.trim().length()!=0) {
+                Picasso.get().load(imageUrl)
+                        .into(imageView);
+            }
+
+        }
     }
+
 }

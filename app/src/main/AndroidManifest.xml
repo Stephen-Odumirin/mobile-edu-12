@@ -4,26 +4,49 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MyLectureActivity" android:parentActivityName=".HomeActivity"/>
-        <activity android:name=".AddLectureActivity" android:parentActivityName=".HomeActivity"/>
+        android:theme="@style/AppTheme"
+
+        >
+        <activity android:name=".ProfileActivity"  android:theme="@style/appStyle"></activity>
         <activity
+            android:screenOrientation="portrait"
+            android:name=".MyLectureActivity"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".AddLectureActivity"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".HomeActivity"
             android:theme="@style/appStyle" />
-        <activity android:name=".LectureListActivity" android:parentActivityName=".HomeActivity" />
-        <activity android:name=".LectureDetailsActivity" android:parentActivityName=".LectureListActivity" />
-        <activity android:name=".authentication.StudentSignUpActivity" />
-        <activity android:name=".authentication.LecturerSignUpActivity" />
-        <activity android:name=".authentication.LecturerSignInActivity" />
-        <activity android:name=".splash.AuthActivity" />
-        <activity android:name=".authentication.StudentSignInActivity" />
         <activity
+            android:screenOrientation="portrait"
+            android:name=".LectureListActivity"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".LectureDetailsActivity"
+            android:parentActivityName=".LectureListActivity" />
+        <activity             android:screenOrientation="portrait"
+            android:name=".authentication.StudentSignUpActivity" />
+        <activity             android:screenOrientation="portrait"
+            android:name=".authentication.LecturerSignUpActivity" />
+        <activity             android:screenOrientation="portrait"
+            android:name=".authentication.LecturerSignInActivity" />
+        <activity             android:screenOrientation="portrait"
+            android:name=".splash.AuthActivity" />
+        <activity             android:screenOrientation="portrait"
+            android:name=".authentication.StudentSignInActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".splash.SplashActivity"
             android:theme="@style/NoActionbar">
             <intent-filter>

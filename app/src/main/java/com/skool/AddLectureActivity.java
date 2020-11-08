@@ -42,7 +42,6 @@ import static com.skool.model.constants.USER_PATH;
 
 public class AddLectureActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ImageView imageView;
-    private Button uploadImageButton;
     private Button uploadLectureButton;
     private TextView uploadLectureStatus;
     private EditText lectureTitleEt;
@@ -77,7 +76,6 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
 
     private void initViews() {
         imageView = findViewById(R.id.uploaded_image_view);
-        uploadImageButton = findViewById(R.id.upload_image_button);
         uploadLectureButton = findViewById(R.id.upload_lecture_button);
         uploadLectureStatus = findViewById(R.id.upload_lecture_status);
         lectureTitleEt = findViewById(R.id.lecture_title_edit_text);
@@ -92,7 +90,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
         lectureCategorySpinner.setOnItemSelectedListener(this);
 
 
-        uploadImageButtonOnClickListener();
+        uploadImageOnClickListener();
         uploadLectureResourceButtonOnClickListener();
 
         saveButtonOnClickListener();
@@ -113,8 +111,8 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
         });
     }
 
-    private void uploadImageButtonOnClickListener() {
-        uploadImageButton.setOnClickListener(new View.OnClickListener() {
+    private void uploadImageOnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -156,6 +154,8 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                                 toast.show();
                                 Intent intent = new Intent(AddLectureActivity.this, HomeActivity.class);
                                 startActivity(intent);
+                                finish();
+
                             } else {
                                 toast = Toast.makeText(AddLectureActivity.this, "Lecture Upload failed!" + Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT);
                                 toast.show();
@@ -163,6 +163,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                             }
                         }
                     });
+
                 }
             }
         });
@@ -222,7 +223,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
             uploadFile(lectureAttachmentUri, LECTURE_ATTACHMENT_PATH);
         }
         else{
-            Log.v("Upload lecture attach", "lecture attchment failed"+ String.valueOf(requestCode) +" "+ String.valueOf(resultCode));
+            Log.v("Upload lecture attach", "lecture attchment failed"+ requestCode +" "+ resultCode);
         }
     }
 
@@ -244,14 +245,14 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                             lectureAttachmentDownloadUrl = uri.toString();
                             Log.v("Upload lecture attach", "lecture attachment download url is: " + lectureAttachmentDownloadUrl);
                             showImage(imageDownloadUrl);
-                            uploadLectureStatus.setText("attachment upload sucessful");
+                            uploadLectureStatus.setText(R.string.upload_sucess_alert);
 
                         }
                     });
                 } else {
                     Toast.makeText(AddLectureActivity.this, "attachment upload failed" + task.getException().toString(), Toast.LENGTH_SHORT).show();
                     Log.v("Upload lecture attach", "attachment upload failed: " + task.getException().toString());
-                    uploadLectureStatus.setText("attachment upload failed");
+                    uploadLectureStatus.setText(R.string.upload_failure_alert);
 
                 }
             }

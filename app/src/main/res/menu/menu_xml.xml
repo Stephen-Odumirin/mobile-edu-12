@@ -4,7 +4,7 @@
 
 
     <item
-        android:id="@+id/miProfile"
+        android:id="@+id/log_out"
         app:showAsAction="ifRoom|withText"
         android:title="@string/mlogout">
     </item>
