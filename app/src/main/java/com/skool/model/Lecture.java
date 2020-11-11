@@ -28,6 +28,7 @@ public class Lecture implements Parcelable {
    private String category;
    private String description;
    private String lectureResourceUrl;
+   private String lectureMimeType;
    private List<Comment> comments;
    private int numberOfComments;
 
@@ -57,6 +58,7 @@ public class Lecture implements Parcelable {
         date = (Date) in.readSerializable();
         id = in.readString();
         authorId = in.readString();
+        lectureMimeType = in.readString();
         imageStorageRef = in.readString();
         lectureResourceStorageRef = in.readString();
     }
@@ -133,6 +135,14 @@ public class Lecture implements Parcelable {
         this.lectureResourceStorageRef = lectureResourceStorageRef;
     }
 
+    public String getLectureMimeType() {
+        return lectureMimeType;
+    }
+
+    public void setLectureMimeType(String lectureMimeType) {
+        this.lectureMimeType = lectureMimeType;
+    }
+
     public String getId() {
         return id;
     }
@@ -167,7 +177,28 @@ public class Lecture implements Parcelable {
         parcel.writeSerializable(date);
         parcel.writeString(id);
         parcel.writeString(authorId);
+        parcel.writeString(lectureMimeType);
         parcel.writeString(imageStorageRef);
         parcel.writeString(lectureResourceStorageRef);
+    }
+
+    @Override
+    public String toString() {
+        return "Lecture{" +
+                "title='" + title + '\'' +
+                ", id='" + id + '\'' +
+                ", author='" + author + '\'' +
+                ", authorId='" + authorId + '\'' +
+                ", date=" + date +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", imageStorageRef='" + imageStorageRef + '\'' +
+                ", lectureResourceStorageRef='" + lectureResourceStorageRef + '\'' +
+                ", category='" + category + '\'' +
+                ", description='" + description + '\'' +
+                ", lectureResourceUrl='" + lectureResourceUrl + '\'' +
+                ", lectureMimeType='" + lectureMimeType + '\'' +
+                ", comments=" + comments +
+                ", numberOfComments=" + numberOfComments +
+                '}';
     }
 }
