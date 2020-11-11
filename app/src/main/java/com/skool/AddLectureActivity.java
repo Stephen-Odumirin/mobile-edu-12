@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,8 +34,12 @@ import com.skool.model.Lecture;
 import com.skool.model.User;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.Objects;
 
+import static android.util.Log.v;
 import static com.skool.model.constants.LECTURE;
 import static com.skool.model.constants.LECTURE_ATTACHMENT_PATH;
 import static com.skool.model.constants.LECTURE_COVER_IMAGE_PATH;
@@ -58,6 +65,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
     String imageDownloadUrl;
     String lectureAttachmentRef;
     String lectureAttachmentDownloadUrl;
+    private String lectureMimeType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +113,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                 String[] mimeTypes ={"image/jpeg","audio/midi", "audio/aac", "audio/wav", "video/mp4", "image/png", "application/pdf", "text/plain"};
                 intent.setType("*/*");
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                Log.v("Upload lecture attach", "start activity for result");
+                v("Upload lecture attach", "start activity for result");
                 startActivityForResult(Intent.createChooser(intent, "insert lecture attachment"), UPLOAD_LECTURE_ATTACHMENT_REQUEST_CODE);
             }
         });
@@ -128,9 +136,9 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View view) {
                 FirebaseFirestore database = FirebaseFirestore.getInstance();
-                Log.v("saving lecture", "fire store instance gotten");
+                v("saving lecture", "fire store instance gotten");
                 DocumentReference newLectureRefrence = database.collection(LECTURE).document();
-                Log.v("saving lecture", "documrnt refrence created");
+                v("saving lecture", "documrnt refrence created");
                 String lectureTitle = lectureTitleEt.getText().toString().trim();
                 String lectureDesc = lectureDescriptionEt.getText().toString().trim();
                 if (lectureTitle.isEmpty() || lectureDesc.isEmpty() || lectureCategory.isEmpty()) {
@@ -143,8 +151,13 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                     lecture.setId(newLectureRefrence.getId());
                     lecture.setImageStorageRef(imageRef);
                     lecture.setImageUrl(imageDownloadUrl);
+                    lecture.setLectureMimeType(lectureMimeType);
+                    Log.v("attach", lecture.getLectureMimeType());
+
+                    lecture.setLectureResourceStorageRef(lectureAttachmentRef);
+                    lecture.setLectureResourceUrl(lectureAttachmentDownloadUrl);
                     showProgressBar();
-                    Log.v("saving lecture", "saving lecture in database");
+                    v("saving lecture", "saving lecture in database");
                     newLectureRefrence.set(lecture).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -159,7 +172,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                             } else {
                                 toast = Toast.makeText(AddLectureActivity.this, "Lecture Upload failed!" + Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT);
                                 toast.show();
-                                Log.v("saving lecture", "failed" + Objects.requireNonNull(task.getException()).getLocalizedMessage());
+                                v("saving lecture", "failed" + Objects.requireNonNull(task.getException()).getLocalizedMessage());
                             }
                         }
                     });
@@ -206,24 +219,36 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPLOAD_LECTURE_COVER_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-            Log.v("Upload Image", "on activity for result called");
+            v("Upload Image", "on activity for result called");
 
             Uri imageUri = data.getData();
-            Log.v("Upload Image", "image gotten: " + imageUri.toString());
+            v("Upload Image", "image gotten: " + imageUri.toString());
 
             uploadImage(imageUri, LECTURE_COVER_IMAGE_PATH);
 
         }
 
-        if(requestCode==UPLOAD_LECTURE_ATTACHMENT_REQUEST_CODE&& resultCode==RESULT_OK){
-            Log.v("Upload lecture attach", "on activity for result called");
+        else if(requestCode==UPLOAD_LECTURE_ATTACHMENT_REQUEST_CODE && resultCode==RESULT_OK){
+            v("Upload lecture attach", "on activity for result called");
             Uri lectureAttachmentUri = data.getData();
-            Log.v("Upload lecture attach", "lecture attchment gotten"+ lectureAttachmentUri.toString());
+            if(lectureAttachmentUri!=null) {
+                try {
+                    String path = getPath(this, lectureAttachmentUri);
+                    lectureMimeType = getFileExtension(path);
 
-            uploadFile(lectureAttachmentUri, LECTURE_ATTACHMENT_PATH);
+                    v("Upload lecture attach", "lecture attchment path gotten" + path);
+                    v("Upload lecture attach", "lecture type gotten" + lectureMimeType);
+
+                    uploadFile(lectureAttachmentUri, LECTURE_ATTACHMENT_PATH);
+                }
+                catch (Exception e){
+                    v("Upload lecture attach", e.getLocalizedMessage());
+
+                }
+            }
         }
         else{
-            Log.v("Upload lecture attach", "lecture attchment failed"+ requestCode +" "+ resultCode);
+            v("Upload lecture attach", "lecture attchment failed"+ requestCode +" "+ resultCode);
         }
     }
 
@@ -231,7 +256,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
         FirebaseStorage db = FirebaseStorage.getInstance();
         final StorageReference storageReference = db.getReference().child(lectureAttachmentPath).child(lectureAttachmentUri.getLastPathSegment());
         lectureAttachmentRef = storageReference.getPath();
-        Log.v("Upload lecture attach", "lecture attach storage ref: " + lectureAttachmentRef);
+        v("Upload lecture attach", "lecture attach storage ref: " + lectureAttachmentRef);
         progressBar.setVisibility(View.VISIBLE);
         storageReference.putFile(lectureAttachmentUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -243,15 +268,14 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                         @Override
                         public void onSuccess(Uri uri) {
                             lectureAttachmentDownloadUrl = uri.toString();
-                            Log.v("Upload lecture attach", "lecture attachment download url is: " + lectureAttachmentDownloadUrl);
-                            showImage(imageDownloadUrl);
+                            v("Upload lecture attach", "lecture attachment download url is: " + lectureAttachmentDownloadUrl);
                             uploadLectureStatus.setText(R.string.upload_sucess_alert);
 
                         }
                     });
                 } else {
                     Toast.makeText(AddLectureActivity.this, "attachment upload failed" + task.getException().toString(), Toast.LENGTH_SHORT).show();
-                    Log.v("Upload lecture attach", "attachment upload failed: " + task.getException().toString());
+                    v("Upload lecture attach", "attachment upload failed: " + task.getException().toString());
                     uploadLectureStatus.setText(R.string.upload_failure_alert);
 
                 }
@@ -265,7 +289,7 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
         FirebaseStorage db = FirebaseStorage.getInstance();
         final StorageReference storageReference = db.getReference().child(path).child(imageUri.getLastPathSegment());
         imageRef = storageReference.getPath();
-        Log.v("Upload Image", "Image storage ref: " + imageRef);
+        v("Upload Image", "Image storage ref: " + imageRef);
         progressBar.setVisibility(View.VISIBLE);
         storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -277,14 +301,14 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                         @Override
                         public void onSuccess(Uri uri) {
                             imageDownloadUrl = uri.toString();
-                            Log.v("Upload Image", "image download url is: " + imageUri);
+                            v("Upload Image", "image download url is: " + imageUri);
                             showImage(imageDownloadUrl);
 
                         }
                     });
                 } else {
                     Toast.makeText(AddLectureActivity.this, "image upload failed" + task.getException().toString(), Toast.LENGTH_SHORT).show();
-                    Log.v("Upload Image", "image upload failed: " + task.getException().toString());
+                    v("Upload Image", "image upload failed: " + task.getException().toString());
 
                 }
             }
@@ -299,4 +323,40 @@ public class AddLectureActivity extends AppCompatActivity implements AdapterView
                     .into(imageView);
         }
     }
+
+    public  String getPath(Context context, Uri uri) throws URISyntaxException {
+        if("content".equalsIgnoreCase(uri.getScheme())){
+         String[] projection = {"_data"};
+            Cursor cursor;
+            try{
+                cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                int column_index = cursor.getColumnIndexOrThrow("_data");
+                if(cursor.moveToFirst()){
+                    return cursor.getString(column_index);
+                }
+                cursor.close();
+
+            }
+            catch (Exception e){
+                v("exception", e.getLocalizedMessage());
+            }
+        }
+        else if ("file".equalsIgnoreCase(uri.getScheme())){
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public String getFileExtension(String filePath){
+        String extension = "";
+        try {
+            extension  = filePath.substring(filePath.lastIndexOf("."));
+        }
+        catch (Exception e){
+            Log.v("exception", e.getLocalizedMessage());
+        }
+
+        return extension;
+    }
+
 }

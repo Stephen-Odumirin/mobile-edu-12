@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.skool.custom.CommentAdapter;
 import com.skool.model.Comment;
 import com.skool.model.Lecture;
@@ -38,6 +44,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.skool.model.constants.LECTURE;
+import static com.skool.model.constants.LECTURE_ATTACHMENT_PATH;
 import static com.skool.model.constants.USER_PATH;
 
 public class LectureDetailsActivity extends AppCompatActivity {
@@ -73,8 +80,30 @@ public class LectureDetailsActivity extends AppCompatActivity {
         initViews();
         getLectureFromIntent();
 
-        addCommentOnClick();
+    }
 
+    private void downloadLectureOnClick() {
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DownloadManager downloadManager = (DownloadManager) LectureDetailsActivity.this.getSystemService(Context.DOWNLOAD_SERVICE);
+                if (lecture.getLectureResourceUrl()!= null) {
+                    Uri uri = Uri.parse(lecture.getLectureResourceUrl());
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                    request.setTitle(lecture.getTitle());
+                    request.setDescription("Downloading lecture...");
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    String path = lecture.getTitle()+lecture.getLectureMimeType();
+                    request.setDestinationInExternalFilesDir(LectureDetailsActivity.this, Environment.DIRECTORY_DOWNLOADS, path);
+                    Log.v("downloading lecture des", lecture.toString());
+
+                    Log.v("downloading", path);
+                    Toast.makeText(LectureDetailsActivity.this, "Downloading Lecture...", Toast.LENGTH_SHORT).show();
+
+                    downloadManager.enqueue(request);
+                }
+            }
+        });
 
     }
 
@@ -90,6 +119,14 @@ public class LectureDetailsActivity extends AppCompatActivity {
            commentList = lecture.getComments();
            commentAdapter = new CommentAdapter(commentList);
            recyclerView.setAdapter(commentAdapter);
+
+            addCommentOnClick();
+
+            downloadLectureOnClick();
+
+        }
+        else {
+            Toast.makeText(this,"Lecture does not exist", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -164,7 +201,8 @@ public class LectureDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        databaseReference.removeEventListener(valueEventListener);
+        super.onDestroy();if(valueEventListener!=null) {
+            databaseReference.removeEventListener(valueEventListener);
+        }
     }
 }
